@@ -1,0 +1,6 @@
+{% extends 'main.html' %}
+
+{% block content %}
+    <p> Are you sure you want to delete {{object}}</p>
+    <a href="{% url 'projects' %}">Go back</a>
+{% endblock %}
