@@ -2,29 +2,13 @@ from django.shortcuts import redirect, render
 from django.http import HttpResponse
 from .models import Project
 from .forms import ProjectForm
-
-projectsList = [
-    {
-        'id': '1',
-        'title': 'Ecommerce Website',
-        'description': 'Fully functional ecommerce website'
-    },
-    {
-        'id': '2',
-        'title': 'Portfolio Website',
-        'description': 'A personal website to write articles and display work'
-    },
-    {
-        'id': '3',
-        'title': 'Social Network',
-        'description': 'An open source project built by the community'
-    }
-]
+import os
 
 
 def projects(request):
     projects = Project.objects.all()
     context = {"projects":projects}
+    print(f'Project:{os.getcwd()}')
     return render(request, 'projects/projects.html', context)
 
 def project(request, pk):
@@ -35,7 +19,7 @@ def createProject(request):
     form = ProjectForm()
 
     if request.method == 'POST':
-        form = ProjectForm(request.POST)
+        form = ProjectForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
             return redirect('projects')
@@ -49,7 +33,7 @@ def updateProject(request, pk):
     form = ProjectForm(instance=project)
 
     if request.method == 'POST':
-        form = ProjectForm(request.POST, instance=project)
+        form = ProjectForm(request.POST, request.FILES, instance=project )
         if form.is_valid():
             form.save()
             return redirect('projects')
